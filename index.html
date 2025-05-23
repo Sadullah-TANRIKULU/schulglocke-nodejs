@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="./bell.png" type="image/x-icon" />
+    <title>Schulglocke</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+      }
+      figure {
+        display: inline-block;
+      }
+      p {
+        font-family: "Trebuchet MS", sans-serif;
+        font-size: large;
+        font-weight: bolder;
+      }
+    </style>
+  </head>
+  <body>
+    <figure>
+      <figcaption>Schulglocke:</figcaption>
+      <audio controls id="bell" src="./Miss-Marple.mp3"></audio>
+    </figure>
+    <section>
+      <article>
+        <p>
+          **Okul zilinin saatinde otomatik çalması için, Sayfa tam yüklendi
+          uyarısından sonra sayfada herhangi boş bir yere tıklayın lütfen
+        </p>
+      </article>
+    </section>
+    <a
+      style="position: fixed; bottom: 0; left: 0"
+      href="https://www.flaticon.com/free-icons/bell"
+      title="bell icons"
+      >Bell icons created by Freepik - Flaticon</a
+    >
+    <script>
+      window.onload = function () {
+        alert("Sayfa tam yüklendi!");
+      };
+
+      // Set your bell times in 24-hour format: ["HH:MM", ...]
+      const bellTimes = [
+        "10:00",
+        "10:40",
+        "11:00",
+        "11:10",
+        "11:40",
+        "11:50",
+        "12:30"
+      ];
+      let rungToday = {};
+
+      function checkAndRingBell() {
+        const now = new Date();
+        const hhmm = now.toTimeString().slice(0, 5);
+        console.log(hhmm);
+
+        console.log(bellTimes.includes(hhmm) && !rungToday[hhmm]);
+
+        if (bellTimes.includes(hhmm) && !rungToday[hhmm]) {
+          document.getElementById("bell").play();
+          rungToday[hhmm] = true;
+        }
+        // Reset at midnight
+        if (hhmm === "00:00") rungToday = {};
+      }
+
+      // User interaction needed for autoplay in browsers
+      document.body.addEventListener(
+        "click",
+        () => {
+          document
+            .getElementById("bell")
+            .play()
+            .then(() => {
+              document.getElementById("bell").pause();
+              document.getElementById("bell").currentTime = 0;
+            });
+          setInterval(checkAndRingBell, 1000); // Check every second
+        },
+        { once: true }
+      );
+    </script>
+  </body>
+</html>
